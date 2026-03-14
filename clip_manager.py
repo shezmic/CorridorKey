@@ -834,7 +834,7 @@ def run_inference(
             alpha_cap.release()
 
         # 7. Stitch comp frames into MP4 (if input was video; skipped in sample mode)
-        if sample_frames is not None:
+        if sample_frames is not None and sample_frames > 0:
             logger.info("Sample mode — skipping comp video stitch.")
         elif clip.input_asset and clip.input_asset.type == "video":
             try:
