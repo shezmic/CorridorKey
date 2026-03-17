@@ -31,3 +31,5 @@ def natural_sort_key(text: str) -> list[str | int]:
 def natsorted(items: list[str]) -> list[str]:
     """Return a naturally sorted copy of a list of strings."""
     return sorted(items, key=natural_sort_key)
+
+# coderabbit-audit

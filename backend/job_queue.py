@@ -322,3 +322,5 @@ class GPUJobQueue:
             result.extend(self._queue)
             result.extend(self._history)
             return result
+
+# coderabbit-audit

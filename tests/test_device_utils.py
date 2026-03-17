@@ -170,3 +170,5 @@ class TestClearDeviceCache:
         monkeypatch.setattr(torch.mps, "empty_cache", mock_empty)
         clear_device_cache(torch.device("mps"))
         mock_empty.assert_called_once()
+
+# coderabbit-audit

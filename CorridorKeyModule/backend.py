@@ -237,3 +237,5 @@ def create_engine(
 
         logger.info("Torch engine loaded: %s (device=%s)", ckpt.name, device)
         return CorridorKeyEngine(checkpoint_path=str(ckpt), device=device or "cpu", img_size=img_size)
+
+# coderabbit-audit

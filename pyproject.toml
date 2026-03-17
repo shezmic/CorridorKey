@@ -126,3 +126,5 @@ timm = { git = "https://github.com/Raiden129/pytorch-image-models-fix", branch =
 torch = { index = "pytorch", extra = "cuda" }
 torchvision = { index = "pytorch", extra = "cuda" }
 corridorkey-mlx = { git = "https://github.com/nikopueringer/corridorkey-mlx.git", extra = "mlx" }
+
+# coderabbit-audit

@@ -486,3 +486,5 @@ def scan_clips_dir(
 
     logger.info(f"Scanned {clips_dir}: {len(entries)} clip(s) found")
     return entries
+
+# coderabbit-audit

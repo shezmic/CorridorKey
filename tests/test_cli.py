@@ -255,3 +255,5 @@ class TestNonInteractiveFlags:
         mock_run.assert_called_once()
         _, kwargs = mock_run.call_args
         assert kwargs["skip_existing"] is True
+
+# coderabbit-audit

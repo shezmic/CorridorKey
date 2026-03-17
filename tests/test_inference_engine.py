@@ -262,3 +262,5 @@ class TestNvidiaGPUProcess:
 
         result = engine.process_frame(sample_frame_rgb, sample_mask)
         assert result["alpha"].dtype == np.float32
+
+# coderabbit-audit

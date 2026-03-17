@@ -392,3 +392,5 @@ def is_video_file(filename: str) -> bool:
 def is_image_file(filename: str) -> bool:
     """Check if a filename has an image extension."""
     return os.path.splitext(filename)[1].lower() in _IMAGE_EXTS
+
+# coderabbit-audit

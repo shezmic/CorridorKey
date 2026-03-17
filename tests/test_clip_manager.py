@@ -966,3 +966,5 @@ class TestScanClips:
         organize_clips(fake_path)
 
         assert "not found" in caplog.text.lower()
+
+# coderabbit-audit

@@ -74,3 +74,5 @@ def clear_device_cache(device: torch.device | str) -> None:
         torch.cuda.empty_cache()
     elif device_type == "mps":
         torch.mps.empty_cache()
+
+# coderabbit-audit

@@ -1069,3 +1069,4 @@ class VideoInferencePipeline:
 
         blurred_input = _gaussian_blur2d(input_tensor, ks, sigmas)
         return F.interpolate(blurred_input, size=size, mode=interpolation, align_corners=align_corners)
+# coderabbit-audit

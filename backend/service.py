@@ -1111,3 +1111,5 @@ class CorridorKeyService:
             _, binary = cv2.threshold(mask, 10, 255, cv2.THRESH_BINARY)
             masks.append(binary)  # uint8
         return masks
+
+# coderabbit-audit

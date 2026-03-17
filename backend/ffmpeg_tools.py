@@ -403,3 +403,5 @@ def read_video_metadata(clip_root: str) -> dict | None:
     except (json.JSONDecodeError, OSError) as e:
         logger.debug(f"Failed to read video metadata: {e}")
         return None
+
+# coderabbit-audit

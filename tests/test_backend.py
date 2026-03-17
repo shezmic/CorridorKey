@@ -153,3 +153,5 @@ class TestWrapMlxOutput:
         # (same behavior as Torch engine — linear_to_srgb doesn't clamp)
         for key in ("comp", "processed"):
             assert result[key].min() >= 0.0, f"{key} has negative values"
+
+# coderabbit-audit

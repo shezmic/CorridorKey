@@ -106,3 +106,5 @@ class ExtractionError(CorridorKeyError):
         self.clip_name = clip_name
         self.detail = detail
         super().__init__(f"Clip '{clip_name}': extraction failed — {detail}")
+
+# coderabbit-audit

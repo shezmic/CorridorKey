@@ -174,3 +174,5 @@ def read_video_mask_at(
         return frame[:, :, 2].astype(np.float32) / 255.0
     finally:
         cap.release()
+
+# coderabbit-audit

@@ -156,3 +156,5 @@ def ensure_output_dirs(clip_root: str) -> dict[str, str]:
     for d in dirs.values():
         os.makedirs(d, exist_ok=True)
     return dirs
+
+# coderabbit-audit
