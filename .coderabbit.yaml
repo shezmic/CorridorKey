@@ -1,0 +1,137 @@
+version: "2"
+
+# CodeRabbit configuration for CorridorKey fork contribution audit
+# Reviewer profile: assertive, direct, no filler
+
+tone_instructions: >
+  Be direct and specific. No praise, no filler phrases like "great job" or
+  "looks good overall". Report every real issue. If something is fine, skip it.
+  Use numbered lists for multiple findings in the same file.
+
+reviews:
+  profile: "assertive"
+  poem: false
+  request_changes_workflow: true
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+
+  path_filters:
+    - "!uv.lock"
+    - "!package-lock.json"
+    - "!**/__pycache__/**"
+    - "!**/*.pyc"
+    - "!**/.DS_Store"
+    - "!**/checkpoints/**"
+
+  path_instructions:
+    # ── PROTECTED — never touch these files ──────────────────────────────────
+    - path: "CorridorKeyModule/core/**"
+      instructions: >
+        PROTECTED: model_transformer.py, color_utils.py, inference_engine.py are
+        never modified in contributions. Flag any proposed changes to these files
+        as out-of-scope. Do not suggest refactors here.
+
+    - path: "CorridorKeyModule/inference_engine.py"
+      instructions: >
+        PROTECTED — do not review or suggest changes to this file.
+
+    # ── SAFE BACKEND FILES ───────────────────────────────────────────────────
+    - path: "backend/ffmpeg_tools.py"
+      instructions: >
+        Review for: missing os.path.join usage (bare string concatenation for paths),
+        platform-specific FFmpeg error messages that don't hint at brew/apt install paths,
+        any FFmpegNotFoundError that doesn't include platform-aware guidance,
+        partial frame cleanup if FFmpeg fails mid-stitch. Flag error handling gaps.
+
+    - path: "backend/errors.py"
+      instructions: >
+        Review for: exception classes missing helpful user-facing messages,
+        any generic Exception usage that should be a specific type,
+        missing __str__ or args on custom exceptions.
+
+    - path: "backend/service.py"
+      instructions: >
+        Review for: race conditions in multi-job state management,
+        resource leaks (open caps, file handles not closed on exception),
+        report_progress() thread safety (check if lock is held when writing counters).
+
+    - path: "backend/job_queue.py"
+      instructions: >
+        Review for: lock discipline — _lock must be held whenever reading or writing
+        _running_jobs or job state; report_progress() must not update frame counters
+        outside the lock; check current_job backward-compat property.
+
+    - path: "backend/clip_state.py"
+      instructions: >
+        Review for: missing validation on frame counts, missing bounds checks before
+        index operations, any mutable default arguments.
+
+    - path: "backend/frame_io.py"
+      instructions: >
+        Review for: read_image_frame() returning None silently without logging,
+        _read_input_frame() bounds check before indexing into file list,
+        missing EXR gamma handling inconsistencies.
+
+    - path: "backend/project.py"
+      instructions: >
+        Review for: path construction using string concatenation instead of os.path.join,
+        missing validation of input paths, silent failures on missing directories.
+
+    - path: "backend/validators.py"
+      instructions: >
+        Review for: incomplete validation rules, missing edge-case checks,
+        validators that accept invalid inputs silently.
+
+    - path: "backend/natural_sort.py"
+      instructions: >
+        Review for: correctness of sort key on mixed alphanumeric filenames,
+        edge cases with empty strings or all-numeric names.
+
+    # ── MAIN PROCESSING FILES ────────────────────────────────────────────────
+    - path: "clip_manager.py"
+      instructions: >
+        Review for: missing bounds checks on frame index access, any video cap
+        that isn't released in a finally block, zero-frame video edge case
+        (frame_count == 0), output directory creation failures, on_frame_complete
+        callback not protected against exceptions from caller.
+
+    - path: "corridorkey_cli.py"
+      instructions: >
+        Review for: missing options that are supported in run_inference() but not
+        exposed as CLI flags, help text that is platform-biased (Windows-only
+        phrasing), Typer option defaults that don't match run_inference() defaults,
+        missing --win-path neutrality.
+
+    - path: "device_utils.py"
+      instructions: >
+        Review for: detect_best_device() not logging which device was selected,
+        missing fallback warning when MLX is not available,
+        _get_engine() ImportError not caught cleanly with user-friendly message.
+
+    # ── INFERENCE PIPELINE (logging only) ───────────────────────────────────
+    - path: "VideoMaMaInferenceModule/pipeline.py"
+      instructions: >
+        Review for: bare print() calls that should be logger.info/warning,
+        any logger.debug that should be info for user-visible progress steps.
+        Do NOT suggest algorithmic changes to the inference logic.
+
+    - path: "CorridorKeyModule/backend.py"
+      instructions: >
+        Review for: backend selection warnings missing when falling back from MLX
+        to PyTorch, any ImportError not caught with a user-friendly message.
+        Do NOT suggest changes to model inference logic.
+
+    # ── TESTS ────────────────────────────────────────────────────────────────
+    - path: "tests/**"
+      instructions: >
+        Review for: vacuous mock tests (tests that pass regardless of implementation),
+        missing edge-case coverage for zero-frame clips, missing coverage for
+        platform-specific code paths, any test that patches the wrong target
+        (patch target must match where the name is used, not where it is defined).
+
+    # ── PROJECT CONFIG ───────────────────────────────────────────────────────
+    - path: "pyproject.toml"
+      instructions: >
+        Review for: requires-python upper bound that excludes 3.14/3.15,
+        torch dependency spec that forces a CPU wheel on Mac (MPS users need
+        the default torch, not torch+cpu), missing Mac-specific install comment.
